@@ -1,0 +1,750 @@
+/* =========================================================
+   ADD VEHICLE PAGE
+   ========================================================= */
+
+.add-vehicle-page {
+    width: 100%;
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    padding: 4px 0 30px;
+
+    color: #0B2545;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.add-page-header {
+    margin-bottom: 18px;
+}
+
+.add-page-header h1 {
+    margin: 0;
+
+    font-size: 23px;
+    font-weight: 700;
+
+    color: #0B2545;
+}
+
+.add-page-header p {
+    margin: 5px 0 0;
+
+    font-size: 11px;
+
+    color: #526170;
+}
+
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.vehicle-form-card {
+    background: #ffffff;
+
+    border: 1px solid #e3e9ef;
+
+    border-radius: 12px;
+
+    padding: 18px 20px;
+
+    margin-bottom: 13px;
+
+    box-shadow:
+        0 3px 14px rgba(11, 37, 69, 0.04);
+}
+
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.vehicle-section-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-bottom: 13px;
+
+    margin-bottom: 16px;
+
+    border-bottom: 1px solid #e5ebf0;
+}
+
+
+/* Icon box */
+
+.vehicle-section-icon {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #eef4f9;
+
+    color: #0B2545;
+
+    font-size: 13px;
+}
+
+
+/* Section heading */
+
+.vehicle-section-title h2 {
+    margin: 0;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #111827 !important;
+}
+
+
+/* Section description */
+
+.vehicle-section-title p {
+    margin: 3px 0 0;
+
+    font-size: 9px;
+
+    color: #667585 !important;
+}
+
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.vehicle-form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 14px 16px;
+}
+
+
+/* =========================================================
+   FORM FIELD
+   ========================================================= */
+
+.vehicle-field {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* Labels */
+
+.vehicle-field label {
+    margin-bottom: 5px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    color: #263238 !important;
+}
+
+
+/* Required star */
+
+.vehicle-field label b {
+    color: #FF6B00;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.vehicle-field input,
+.vehicle-field select,
+.vehicle-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid #d8e0e8;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #182532 !important;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    outline: none;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Input / select */
+
+.vehicle-field input,
+.vehicle-field select {
+    height: 34px;
+
+    padding: 0 9px;
+}
+
+
+/* Textarea */
+
+.vehicle-field textarea {
+    min-height: 75px;
+
+    padding: 9px;
+
+    resize: vertical;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+.vehicle-field input::placeholder,
+.vehicle-field textarea::placeholder {
+    color: #9AA6B2 !important;
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+   ========================================================= */
+
+.vehicle-field input:focus,
+.vehicle-field select:focus,
+.vehicle-field textarea:focus {
+
+    border-color: #FF6B00;
+
+    box-shadow:
+        0 0 0 2px rgba(255, 107, 0, 0.08);
+}
+
+
+/* =========================================================
+   FULL WIDTH FIELD
+   ========================================================= */
+
+.vehicle-full {
+    grid-column: span 2;
+}
+
+
+/* =========================================================
+   EMPTY SERVICE HISTORY
+   ========================================================= */
+
+.empty-history {
+
+    min-height: 100px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px dashed #d4dee7;
+
+    border-radius: 9px;
+
+    color: #7d8b99;
+
+    text-align: center;
+
+    margin-bottom: 12px;
+}
+
+
+/* History icon */
+
+.empty-history svg {
+
+    font-size: 20px;
+
+    margin-bottom: 7px;
+
+    color: #9AA9B8;
+}
+
+
+/* Main message */
+
+.empty-history p {
+
+    margin: 0;
+
+    font-size: 10px;
+
+    color: #4A5968 !important;
+}
+
+
+/* Small message */
+
+.empty-history span {
+
+    margin-top: 3px;
+
+    font-size: 8px;
+
+    color: #718096 !important;
+}
+
+
+/* =========================================================
+   SERVICE RECORD
+   ========================================================= */
+
+.service-record {
+
+    border: 1px solid #dfe6ed;
+
+    border-radius: 9px;
+
+    padding: 13px;
+
+    margin-bottom: 10px;
+
+    background: #fafcfd;
+}
+
+
+/* Service record header */
+
+.service-record-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+
+.service-record-header strong {
+
+    font-size: 10px;
+
+    color: #0B2545 !important;
+}
+
+
+/* =========================================================
+   REMOVE SERVICE BUTTON
+   ========================================================= */
+
+.remove-service {
+
+    width: 25px;
+    height: 25px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #fff0ed;
+
+    color: #dc4632;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: 0.2s;
+}
+
+
+.remove-service:hover {
+
+    background: #dc4632;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SERVICE GRID
+   ========================================================= */
+
+.service-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 12px 14px;
+}
+
+
+/* =========================================================
+   ADD PREVIOUS RECORD BUTTON
+   ========================================================= */
+
+.add-history-button {
+
+    height: 32px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0 12px;
+
+    border: 1px dashed #b8c5d1;
+
+    border-radius: 7px;
+
+    background: #ffffff;
+
+    color: #0B2545;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.add-history-button:hover {
+
+    border-color: #FF6B00;
+
+    color: #FF6B00;
+
+    background: #fffaf6;
+}
+
+
+/* =========================================================
+   PROBLEMS
+   ========================================================= */
+
+.problem-list {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+
+    margin-bottom: 16px;
+}
+
+
+/* Problem option */
+
+.problem-option {
+
+    min-height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0 9px;
+
+    border: 1px solid #e0e6ec;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    background: #ffffff;
+
+    transition: all 0.2s ease;
+}
+
+
+.problem-option:hover {
+
+    border-color: #ffb07a;
+}
+
+
+/* Checkbox */
+
+.problem-option input {
+
+    accent-color: #FF6B00;
+
+    width: 12px;
+    height: 12px;
+}
+
+
+/* Problem text */
+
+.problem-option span {
+
+    font-size: 9px;
+
+    color: #263238 !important;
+}
+
+
+/* Problem description */
+
+.problem-description {
+
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   NOTES
+   ========================================================= */
+
+.notes-area {
+
+    min-height: 70px !important;
+}
+
+
+/* =========================================================
+   ACTION AREA
+   ========================================================= */
+
+.vehicle-form-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    min-height: 40px;
+
+    margin-top: 4px;
+}
+
+
+/* Buttons container */
+
+.vehicle-action-buttons {
+
+    display: flex;
+
+    gap: 8px;
+
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   CANCEL + SUBMIT
+   ========================================================= */
+
+.vehicle-cancel,
+.vehicle-submit {
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 15px;
+
+    border-radius: 7px;
+
+    font-family: inherit;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Cancel */
+
+.vehicle-cancel {
+
+    background: #ffffff;
+
+    color: #637284;
+
+    border: 1px solid #dce3ea;
+}
+
+
+.vehicle-cancel:hover {
+
+    background: #f5f7fa;
+}
+
+
+/* Submit */
+
+.vehicle-submit {
+
+    background: #FF6B00;
+
+    color: #ffffff;
+
+    border: 1px solid #FF6B00;
+
+    box-shadow:
+        0 5px 12px rgba(255, 107, 0, 0.18);
+}
+
+
+.vehicle-submit:hover {
+
+    background: #e85e00;
+
+    border-color: #e85e00;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   SUCCESS / ERROR MESSAGE
+   ========================================================= */
+
+.vehicle-success,
+.vehicle-error {
+
+    margin: 0;
+
+    font-size: 9px;
+
+    font-weight: 600;
+}
+
+
+.vehicle-success {
+
+    color: #16a34a;
+}
+
+
+.vehicle-error {
+
+    color: #dc2626;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .vehicle-form-grid,
+    .service-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .problem-list {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .add-vehicle-page {
+
+        padding: 8px;
+    }
+
+
+    .vehicle-form-card {
+
+        padding: 14px;
+    }
+
+
+    .vehicle-form-grid,
+    .service-grid,
+    .problem-list {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .vehicle-full {
+
+        grid-column: span 1;
+    }
+
+
+    .vehicle-form-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+
+    .vehicle-action-buttons {
+
+        justify-content: flex-end;
+    }
+}
