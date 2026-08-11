@@ -1,0 +1,72 @@
+/* ==========================================================
+   GMS — Global Design Tokens
+   Theme reference: dark navy + orange (auth) / navy sidebar (app)
+   ========================================================== */
+
+:root {
+  /* Core palette */
+  --gms-navy-900: #0d1b2e;   /* darkest bg, sidebar */
+  --gms-navy-800: #13233b;   /* dark panel bg */
+  --gms-navy-700: #1b2c47;   /* card-on-dark, hover */
+  --gms-navy-border: #24344f;
+
+  --gms-orange-500: #f2803c; /* primary CTA */
+  --gms-orange-600: #e06b28; /* hover / active */
+  --gms-orange-100: #fde9dc;
+
+  --gms-green-500: #219a52;  /* logo, ratings, success */
+  --gms-green-600: #17803f;
+  --gms-green-100: #e3f6ea;
+
+  --gms-white: #ffffff;
+  --gms-gray-50:  #f7f8fa;
+  --gms-gray-100: #eef0f3;
+  --gms-gray-300: #d7dce2;
+  --gms-gray-400: #a7b0bc;
+  --gms-gray-500: #7c8896;
+  --gms-gray-700: #4a5568;
+  --gms-gray-900: #1f2937;
+
+  --gms-radius-sm: 8px;
+  --gms-radius-md: 14px;
+  --gms-radius-lg: 22px;
+
+  --gms-shadow-card: 0 10px 30px rgba(13, 27, 46, 0.08);
+  --gms-shadow-pop:  0 16px 40px rgba(13, 27, 46, 0.18);
+
+  --gms-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--gms-font-body);
+  color: var(--gms-gray-900);
+  background: var(--gms-gray-50);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input {
+  font-family: inherit;
+}
+
+/* Focus visibility for accessibility */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--gms-orange-500);
+  outline-offset: 2px;
+}
