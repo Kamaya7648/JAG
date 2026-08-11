@@ -1,11 +1,14 @@
-import Dashboard from "./pages/Dashboard/Dashboard";
-import { AppProvider } from "./context/AppContext";
+import { BrowserRouter } from 'react-router-dom';
+import { AppProvider } from './context/AppContext';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (
-    <AppProvider>
-      <Dashboard />
-    </AppProvider>
+    <BrowserRouter>
+      <AppProvider>
+        <AppRoutes />
+      </AppProvider>
+    </BrowserRouter>
   );
 }
 
