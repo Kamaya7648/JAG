@@ -1,0 +1,309 @@
+.settings-page{
+    background:white;
+    border-radius:14px;
+    padding:24px 28px;
+    box-shadow:0 4px 18px rgba(0,0,0,.05);
+}
+
+.settings-header h2{
+    margin:0;
+    font-size:20px;
+    color:#17324D;
+}
+
+.settings-header p{
+    margin-top:4px;
+    font-size:12px;
+    color:#8B98A5;
+}
+
+.settings-tabs{
+    display:flex;
+    gap:6px;
+    margin-top:18px;
+    border-bottom:1px solid #EAEEF3;
+}
+
+.settings-tab{
+    background:none;
+    border:none;
+    padding:10px 14px;
+    font-size:13px;
+    color:#8B98A5;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:.2s;
+}
+
+.settings-tab:hover{
+    color:#17324D;
+}
+
+.settings-tab.active{
+    color:#FF6B00;
+    border-bottom:2px solid #FF6B00;
+    font-weight:600;
+}
+
+.settings-body{
+    margin-top:20px;
+}
+
+.settings-panel{
+    display:grid;
+    grid-template-columns:1.4fr 1fr;
+    gap:20px;
+}
+
+.settings-panel.single{
+    display:block;
+}
+
+.settings-card{
+    background:#F9FAFC;
+    border:1px solid #EAEEF3;
+    border-radius:12px;
+    padding:18px 20px;
+}
+
+.settings-card-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    font-weight:700;
+    color:#17324D;
+    margin-bottom:14px;
+}
+
+.settings-card-title svg{
+    color:#FF6B00;
+    font-size:13px;
+}
+
+.settings-card label{
+    display:block;
+    font-size:11px;
+    color:#7A8797;
+    margin-bottom:5px;
+    margin-top:12px;
+}
+
+.settings-card label:first-of-type{
+    margin-top:0;
+}
+
+.settings-card input[type="text"],
+.settings-card input[type="password"],
+.settings-card textarea,
+.settings-card select{
+    width:100%;
+    border:1px solid #E1E6EC;
+    border-radius:8px;
+    padding:9px 12px;
+    font-size:13px;
+    color:#17324D;
+    background:white;
+    outline:none;
+    transition:.2s;
+    font-family:inherit;
+}
+
+.settings-card input[type="text"]:focus,
+.settings-card input[type="password"]:focus,
+.settings-card textarea:focus,
+.settings-card select:focus{
+    border-color:#FF6B00;
+}
+
+.settings-card textarea{
+    resize:vertical;
+}
+
+.settings-row-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.settings-hint{
+    font-size:12px;
+    color:#8B98A5;
+    line-height:1.5;
+    margin:0;
+}
+
+/* ============ TOGGLES ============ */
+
+.toggle-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #EDF1F5;
+    font-size:13px;
+    color:#17324D;
+}
+
+.toggle-row:last-child{
+    border-bottom:none;
+}
+
+.toggle-switch{
+    position:relative;
+    display:inline-block;
+    width:38px;
+    height:20px;
+    flex-shrink:0;
+}
+
+.toggle-switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider{
+    position:absolute;
+    cursor:pointer;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:#D6DCE3;
+    transition:.25s;
+    border-radius:20px;
+}
+
+.slider::before{
+    position:absolute;
+    content:"";
+    height:14px;
+    width:14px;
+    left:3px;
+    bottom:3px;
+    background-color:white;
+    transition:.25s;
+    border-radius:50%;
+}
+
+.toggle-switch input:checked + .slider{
+    background-color:#22C55E;
+}
+
+.toggle-switch input:checked + .slider::before{
+    transform:translateX(18px);
+}
+
+/* ============ LOGIN ACTIVITY ============ */
+
+.login-activity-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #EDF1F5;
+    font-size:12px;
+    color:#7A8797;
+}
+
+.login-activity-row:last-child{
+    border-bottom:none;
+}
+
+.login-activity-row strong{
+    color:#17324D;
+    font-size:12px;
+}
+
+.status-active{
+    color:#22C55E !important;
+}
+
+/* ============ FOOTER ============ */
+
+.settings-footer{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    justify-content:flex-end;
+    margin-top:24px;
+    border-top:1px solid #EAEEF3;
+    padding-top:18px;
+}
+
+.save-btn{
+    background:#0B2545;
+    color:white;
+    border:none;
+    padding:10px 22px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.save-btn:hover{
+    background:#FF6B00;
+}
+
+.saved-msg{
+    font-size:12px;
+    color:#22C55E;
+    font-weight:600;
+}
+
+/* ============ DARK MODE ============ */
+
+.dashboard.dark-mode{
+    background:#0F1B2D;
+}
+
+.dashboard.dark-mode .header .search-bar,
+.dashboard.dark-mode .header .date-card,
+.dashboard.dark-mode .settings-page{
+    background:#17243A;
+    color:#E5E9F0;
+}
+
+.dashboard.dark-mode .welcome-row h2,
+.dashboard.dark-mode .settings-header h2,
+.dashboard.dark-mode .settings-card-title,
+.dashboard.dark-mode .date-card h4,
+.dashboard.dark-mode .profile-info h4,
+.dashboard.dark-mode .toggle-row,
+.dashboard.dark-mode .login-activity-row strong,
+.dashboard.dark-mode .settings-card input,
+.dashboard.dark-mode .settings-card textarea,
+.dashboard.dark-mode .settings-card select{
+    color:#E5E9F0;
+    background:#1F2E47;
+}
+
+.dashboard.dark-mode .settings-card{
+    background:#1A2A42;
+    border-color:#2A3B55;
+}
+
+.dashboard.dark-mode .welcome-row p,
+.dashboard.dark-mode .settings-header p,
+.dashboard.dark-mode .date-card span,
+.dashboard.dark-mode .profile-info span,
+.dashboard.dark-mode .settings-hint,
+.dashboard.dark-mode .login-activity-row{
+    color:#9AA9C0;
+}
+
+.dashboard.dark-mode .settings-tab{
+    color:#9AA9C0;
+}
+
+.dashboard.dark-mode .settings-tab.active{
+    color:#FF6B00;
+}
+
+.dashboard.dark-mode .settings-tabs,
+.dashboard.dark-mode .settings-footer{
+    border-color:#2A3B55;
+}

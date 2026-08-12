@@ -1,0 +1,102 @@
+.sidebar{
+    width:200px;
+    min-height:100vh;
+    background:#10233F;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    padding:20px 14px;
+}
+
+.logo{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+}
+
+.gear-wrapper{
+    position:relative;
+    width:52px;
+    height:52px;
+    margin-bottom:10px;
+}
+
+.gear{ position:absolute; color:#22C55E; }
+.gear1{ font-size:42px; left:0; top:7px; animation:spinClock 16s linear infinite; }
+.gear2{ font-size:19px; top:0; right:0; animation:spinAnti 11s linear infinite; }
+.gear3{ font-size:16px; bottom:0; right:2px; animation:spinClock 18s linear infinite; }
+
+@keyframes spinClock{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+@keyframes spinAnti{ from{transform:rotate(360deg);} to{transform:rotate(0deg);} }
+
+.logo-text{ text-align:center; }
+.logo-text h2{ margin:0; font-size:26px; font-weight:800; letter-spacing:.3px; }
+.logo-text p{ margin-top:4px; font-size:10px; line-height:1.3; color:#AFC3D6; }
+
+.divider{ margin:14px 0; border:none; border-top:1px solid rgba(255,255,255,.08); }
+
+.menu{ display:flex; flex-direction:column; gap:6px; }
+
+.menu-item{
+    width:100%;
+    display:flex;
+    flex-direction:row;
+    justify-content:flex-start;
+    align-items:center;
+    gap:12px;
+    padding:11px 12px;
+    border:none;
+    border-radius:10px;
+    background:none;
+    color:white;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.menu-item:hover{ background:rgba(255,255,255,.06); }
+.menu-item.active{ background:#FF6B00; box-shadow:0 4px 10px rgba(255,107,0,.30); }
+
+.icon{ font-size:16px; flex-shrink:0; }
+
+.icon img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    display:block;
+}
+
+.menu-item span.menu-text{ font-size:13px; text-align:left; line-height:1.3; }
+
+.sidebar-bottom{ margin-top:auto; }
+
+.logout{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    padding:11px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,.18);
+    background:none;
+    color:white;
+    cursor:pointer;
+    transition:.25s;
+    font-size:12px;
+}
+
+.logout:hover{ background:#FF6B00; border-color:#FF6B00; }
+
+.footer-links{
+    margin-top:14px;
+    padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.08);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px 6px;
+    justify-items:center;
+}
+
+.footer-links a{ text-decoration:none; color:#AFC3D6; font-size:9px; transition:.25s; }
+.footer-links a:hover{ color:#FF6B00; }
