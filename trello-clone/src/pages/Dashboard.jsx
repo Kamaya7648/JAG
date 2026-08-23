@@ -58,19 +58,24 @@ export default function Dashboard() {
       <Sidebar />
       <main className="main-panel">
         <div className="topbar-dash">
-          <div>
-            <h1>Assigned Vehicles</h1>
-          </div>
-          <div className="topbar-dash-actions">
-            <label className="search-input">
-              <input
-                placeholder="Search vehicles..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </label>
-          </div>
-        </div>
+  <div className="topbar-dash-heading">
+    <h1>Assigned Vehicles</h1>
+    <div className="stat-card">
+      <span className="stat-label"><center>Total Vehicles</center></span>
+      <span className="stat-count"><center>{VEHICLES.length}</center></span>
+    </div>
+  </div>
+  <div className="topbar-dash-actions">
+    <label className="search-input">
+      <input
+        placeholder="Search vehicles..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+    </label>
+  </div>
+</div>
+        
 
         <div className="table-card">
           <div className="table-scroll">
