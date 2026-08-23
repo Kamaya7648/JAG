@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import Sidebar from '../components/Sidebar.jsx'
 import Column from '../components/Column.jsx'
 import AddColumn from '../components/AddColumn.jsx'
 import { VEHICLES, STATUS_STYLES, buildDefaultBoard } from '../data.js'
@@ -7,11 +8,48 @@ import { VEHICLES, STATUS_STYLES, buildDefaultBoard } from '../data.js'
 let idCounter = 5000
 const nextId = () => `col-${Date.now()}-${idCounter++}`
 
+const TASKLIST_ID = 'tasklist'
+const DEFAULT_SIDEBAR_WIDTH = 227
+const MIN_SIDEBAR_WIDTH = 150
+const MAX_SIDEBAR_WIDTH = 480
+
 export default function Board() {
   const { vehicleId } = useParams()
   const navigate = useNavigate()
   const vehicle = VEHICLES.find((v) => v.id === vehicleId)
   const [columns, setColumns] = useState(() => buildDefaultBoard(vehicle || { id: vehicleId, status: 'Received' }))
+  const [taskList, setTaskList] = useState([])
+  const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_SIDEBAR_WIDTH)
+  const [isResizing, setIsResizing] = useState(false)
+
+  const startResize = (e) => {
+    e.preventDefault()
+    setIsResizing(true)
+  }
+
+  const stopResize = useCallback(() => setIsResizing(false), [])
+
+  const resize = useCallback(
+    (e) => {
+      if (!isResizing) return
+      const boardLayoutEl = document.getElementById('board-layout')
+      if (!boardLayoutEl) return
+      const layoutLeft = boardLayoutEl.getBoundingClientRect().left
+      let newWidth = e.clientX - layoutLeft
+      newWidth = Math.max(MIN_SIDEBAR_WIDTH, Math.min(MAX_SIDEBAR_WIDTH, newWidth))
+      setSidebarWidth(newWidth)
+    },
+    [isResizing]
+  )
+
+  useEffect(() => {
+    window.addEventListener('mousemove', resize)
+    window.addEventListener('mouseup', stopResize)
+    return () => {
+      window.removeEventListener('mousemove', resize)
+      window.removeEventListener('mouseup', stopResize)
+    }
+  }, [resize, stopResize])
 
   const handleDragStart = (e, cardId, fromColumnId) => {
     e.dataTransfer.setData('cardId', cardId)
@@ -22,6 +60,31 @@ export default function Board() {
     const cardId = e.dataTransfer.getData('cardId')
     const fromColumnId = e.dataTransfer.getData('fromColumnId')
     if (!cardId || fromColumnId === toColumnId) return
+
+    if (fromColumnId === TASKLIST_ID) {
+      const card = taskList.find((c) => c.id === cardId)
+      if (!card) return
+      setTaskList((prev) => prev.filter((c) => c.id !== cardId))
+      setColumns((prev) =>
+        prev.map((col) => (col.id === toColumnId ? { ...col, cards: [...col.cards, card] } : col))
+      )
+      return
+    }
+
+    if (toColumnId === TASKLIST_ID) {
+      setColumns((prev) => {
+        let movedCard = null
+        const withoutCard = prev.map((col) => {
+          if (col.id !== fromColumnId) return col
+          const card = col.cards.find((c) => c.id === cardId)
+          movedCard = card
+          return { ...col, cards: col.cards.filter((c) => c.id !== cardId) }
+        })
+        if (movedCard) setTaskList((tPrev) => [...tPrev, movedCard])
+        return withoutCard
+      })
+      return
+    }
 
     setColumns((prev) => {
       let movedCard = null
@@ -68,6 +131,18 @@ export default function Board() {
     )
   }
 
+  const addTaskListCard = (_, text, days) => {
+    setTaskList((prev) => [...prev, { id: `task-${Date.now()}`, text, days }])
+  }
+
+  const deleteTaskListCard = (_, cardId) => {
+    setTaskList((prev) => prev.filter((c) => c.id !== cardId))
+  }
+
+  const editTaskListCard = (_, cardId, text, days) => {
+    setTaskList((prev) => prev.map((c) => (c.id === cardId ? { ...c, text, days } : c)))
+  }
+
   const addColumn = (title) => {
     setColumns((prev) => [...prev, { id: nextId(), title, cards: [] }])
   }
@@ -84,17 +159,7 @@ export default function Board() {
 
   return (
     <div className="board-page">
-      <nav className="topbar">
-        <div className="topbar-left">
-          <span className="logo">◆ GarageSync</span>
-          <button className="back-link" onClick={() => navigate('/')}>← Assigned Vehicles</button>
-        </div>
-        <div className="topbar-right">
-          <div className="search-box">🔍 <span>Search</span></div>
-          <span className="icon-btn">🔔</span>
-          <span className="avatar avatar-self">K</span>
-        </div>
-      </nav>
+      <Sidebar />
 
       <div className="board-header">
         <h1 className="board-title">
@@ -108,22 +173,42 @@ export default function Board() {
         <span className="vehicle-id-pill">ID: {vehicleId}</span>
       </div>
 
-      <main className="board">
-        {columns.map((column) => (
+      <div className="board-layout" id="board-layout">
+        <aside className="task-sidebar" style={{ width: sidebarWidth, flex: `0 0 ${sidebarWidth}px` }}>
           <Column
-            key={column.id}
-            column={column}
+            column={{ id: TASKLIST_ID, title: 'Task List', cards: taskList }}
             onDragStart={handleDragStart}
             onDrop={handleDrop}
-            onAddCard={addCard}
-            onDeleteCard={deleteCard}
-            onEditCard={editCard}
-            onDeleteColumn={deleteColumn}
-            onRenameColumn={renameColumn}
+            onAddCard={addTaskListCard}
+            onDeleteCard={deleteTaskListCard}
+            onEditCard={editTaskListCard}
+            onDeleteColumn={() => {}}
+            onRenameColumn={() => {}}
           />
-        ))}
-        <AddColumn onAdd={addColumn} existingCount={columns.length} />
-      </main>
+        </aside>
+
+        <div
+          className={`sidebar-resizer ${isResizing ? 'resizing' : ''}`}
+          onMouseDown={startResize}
+        />
+
+        <main className="board">
+          {columns.map((column) => (
+            <Column
+              key={column.id}
+              column={column}
+              onDragStart={handleDragStart}
+              onDrop={handleDrop}
+              onAddCard={addCard}
+              onDeleteCard={deleteCard}
+              onEditCard={editCard}
+              onDeleteColumn={deleteColumn}
+              onRenameColumn={renameColumn}
+            />
+          ))}
+          <AddColumn onAdd={addColumn} existingCount={columns.length} />
+        </main>
+      </div>
     </div>
   )
 }
