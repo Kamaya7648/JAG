@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar.jsx'
 import ColumnFilter from '../components/ColumnFilter.jsx'
@@ -17,8 +17,8 @@ const COLUMNS = [
 export default function Dashboard() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
-  const [sort, setSort] = useState(null) // { key, direction }
-  const [filters, setFilters] = useState({}) // { key: Set|null }
+  const [sort, setSort] = useState(null)
+  const [filters, setFilters] = useState({})
 
   const optionsFor = (key) => [...new Set(VEHICLES.map((v) => v[key]))]
 
@@ -68,72 +68,70 @@ export default function Dashboard() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-            </label>          </div>
+            </label>
+          </div>
         </div>
 
         <div className="table-card">
           <div className="table-scroll">
-          <table className="vehicle-table">
-            <thead>
-              <tr>
-                {COLUMNS.map(({ key, label }) => (
-                  <th key={key}>
-                    <span className="th-label">
-                      {label}
-                      <ColumnFilter
-                        label={label}
-                        columnKey={key}
-                        options={optionsFor(key)}
-                        selected={filters[key] ?? null}
-                        onChange={(val) => handleFilterChange(key, val)}
-                        sort={sort}
-                        onSort={handleSort}
-                      />
-                    </span>
-                  </th>
-                ))}
-                <th>Service Board</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((v) => (
-                <tr key={v.id}>
-                  <td>{v.id}</td>
-                  <td>{v.model}</td>
-                  <td>{v.plate}</td>
-                  <td>
-                    <span
-                      className="status-pill"
-                      style={{
-                        background: STATUS_STYLES[v.status]?.bg,
-                        color: STATUS_STYLES[v.status]?.color,
-                      }}
-                    >
-                      {v.status}
-                    </span>
-                  </td>
-                  <td>{v.customerName}</td>
-                  <td>{v.customerAddress}</td>
-                  <td>{v.phone}</td>
-                  <td>
-                    <button className="btn-board" onClick={() => navigate(`/board/${v.id}`)}>
-                      Open Board â†’
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {filtered.length === 0 && (
+            <table className="vehicle-table">
+              <thead>
                 <tr>
-                  <td colSpan={8} className="empty-state">
-                    No vehicles match your search or filters.
-                  </td>
+                  {COLUMNS.map(({ key, label }) => (
+                    <th key={key}>
+                      <span className="th-label">
+                        {label}
+                        <ColumnFilter
+                          label={label}
+                          columnKey={key}
+                          options={optionsFor(key)}
+                          selected={filters[key] ?? null}
+                          onChange={(val) => handleFilterChange(key, val)}
+                          sort={sort}
+                          onSort={handleSort}
+                        />
+                      </span>
+                    </th>
+                  ))}
+                  <th>Service Board</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-          </div>
-          <div className="table-footer">
-            Showing {filtered.length} of {VEHICLES.length} vehicles
+              </thead>
+              <tbody>
+                {filtered.map((v) => (
+                  <tr key={v.id}>
+                    <td>{v.id}</td>
+                    <td>{v.model}</td>
+                    <td>{v.plate}</td>
+                    <td>
+                      <span
+                        className="status-pill"
+                        style={{
+                          background: STATUS_STYLES[v.status]?.bg,
+                          color: STATUS_STYLES[v.status]?.color,
+                        }}
+                      >
+                        {v.status}
+                      </span>
+                    </td>
+                    <td>{v.customerName}</td>
+                    <td>{v.customerAddress}</td>
+                    <td>{v.phone}</td>
+                    <td>
+                      <button className="btn-board" onClick={() => navigate(`/board/${v.id}`)}>
+                        Open Board →
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {filtered.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="empty-state">
+                      No vehicles match your search or filters.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </main>
