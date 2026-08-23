@@ -5,7 +5,14 @@ import logo from '../../assets/images/logo.png';
 import './Login.css';
 
 const EyeIcon = ({ open }) => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+  >
     {open ? (
       <>
         <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
@@ -21,21 +28,42 @@ const EyeIcon = ({ open }) => (
 );
 
 const MailIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+  >
     <rect x="2" y="4" width="20" height="16" rx="2" />
     <path d="M2 7l10 6 10-6" />
   </svg>
 );
 
 const LockIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+  >
     <rect x="4" y="10" width="16" height="10" rx="2" />
     <path d="M8 10V7a4 4 0 0 1 8 0v3" />
   </svg>
 );
 
 const UserIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+  <svg
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+  >
     <circle cx="12" cy="8" r="4" />
     <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" />
   </svg>
@@ -43,48 +71,82 @@ const UserIcon = () => (
 
 const Login = () => {
   const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ email: '', password: '', remember: true });
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    remember: true
+  });
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
+
     if (!form.email || !form.password) {
       setError('Enter your email and password to continue.');
       return;
     }
-    // TODO: wire up real auth call here
-    navigate('/supervisor/profile');
+
+    // navigate to oshanis dashbord
+    navigate('/dashboard');
   };
 
   return (
-    <div className="login-page" style={{ backgroundImage: `url(${bg1})` }}>
+    <div
+      className="login-page"
+      style={{ backgroundImage: `url(${bg1})` }}
+    >
       <div className="login-overlay" />
 
       <div className="login-content">
         <div className="brand">
           <div className="brand-mark">
-            <img src={logo} alt="GMS logo" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            <img
+              src={logo}
+              alt="GMS logo"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
           </div>
+
           <h1 className="brand-title">GMS</h1>
+
           <div className="brand-stripe" aria-hidden="true" />
-          <p className="brand-subtitle">Garage Management System</p>
+
+          <p className="brand-subtitle">
+            Garage Management System
+          </p>
         </div>
 
         <div className="login-card">
           <h2 className="card-title">Welcome Back!</h2>
-          <p className="card-subtitle">Sign in to continue to your account</p>
+
+          <p className="card-subtitle">
+            Sign in to continue to your account
+          </p>
 
           <form onSubmit={handleSubmit} noValidate>
-            <label className="field-label" htmlFor="email">Email address</label>
+            <label className="field-label" htmlFor="email">
+              Email address
+            </label>
+
             <div className="input-wrap">
-              <span className="input-icon"><MailIcon /></span>
+              <span className="input-icon">
+                <MailIcon />
+              </span>
+
               <input
                 id="email"
                 name="email"
@@ -96,9 +158,15 @@ const Login = () => {
               />
             </div>
 
-            <label className="field-label" htmlFor="password">Password</label>
+            <label className="field-label" htmlFor="password">
+              Password
+            </label>
+
             <div className="input-wrap">
-              <span className="input-icon"><LockIcon /></span>
+              <span className="input-icon">
+                <LockIcon />
+              </span>
+
               <input
                 id="password"
                 name="password"
@@ -108,17 +176,24 @@ const Login = () => {
                 onChange={handleChange}
                 autoComplete="current-password"
               />
+
               <button
                 type="button"
                 className="input-action"
                 onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-label={
+                  showPassword ? 'Hide password' : 'Show password'
+                }
               >
                 <EyeIcon open={showPassword} />
               </button>
             </div>
 
-            {error && <p className="form-error">{error}</p>}
+            {error && (
+              <p className="form-error">
+                {error}
+              </p>
+            )}
 
             <div className="row-between">
               <label className="checkbox">
@@ -128,19 +203,27 @@ const Login = () => {
                   checked={form.remember}
                   onChange={handleChange}
                 />
+
                 <span>Remember me</span>
               </label>
-              <a href="/forgot-password" className="link">Forgot password?</a>
+
+              <a href="/forgot-password" className="link">
+                Forgot password?
+              </a>
             </div>
 
-            <button type="submit" className="btn-primary">Sign in</button>
+            <button type="submit" className="btn-primary">
+              Sign in
+            </button>
 
-            <div className="divider"><span>or</span></div>
+            <div className="divider">
+              <span>or</span>
+            </div>
 
             <button
               type="button"
               className="btn-secondary"
-              onClick={() => navigate('/Register')}
+              onClick={() => navigate('/register')}
             >
               <UserIcon />
               Register
@@ -148,11 +231,12 @@ const Login = () => {
           </form>
         </div>
 
-        <p className="login-footer">© 2026 GMS. All rights reserved.</p>
+        <p className="login-footer">
+          © 2026 GMS. All rights reserved.
+        </p>
       </div>
     </div>
   );
 };
 
 export default Login;
-
