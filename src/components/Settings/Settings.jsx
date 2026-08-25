@@ -55,6 +55,7 @@ function Settings() {
   ];
 
   return (
+    <main className="main-panel">
     <div className="settings-page">
 
       <div className="settings-header">
@@ -354,8 +355,9 @@ function Settings() {
         </button>
         {saved && <span className="saved-msg">Saved ✓</span>}
       </div>
-
+      
     </div>
+    </main>
   );
 }
 
