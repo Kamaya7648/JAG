@@ -1,0 +1,468 @@
+/* GMS Supervisor Register — navy / orange / white theme */
+
+* {
+  box-sizing: border-box;
+}
+
+.auth-screen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  font-family: 'Inter', system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
+}
+
+.auth-screen__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+  transform: scale(1.02);
+}
+.auth-screen__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(11, 23, 41, 0.88) 0%, rgba(16, 35, 63, 0.82) 55%, rgba(22, 48, 92, 0.75) 100%);
+}
+/* ---------- Left brand panel ---------- */
+
+.auth-side {
+  flex: 0 0 38%;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  color: #FFFFFF;
+  padding: 40px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+.auth-side > * {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-side__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.auth-side__brand h3 {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.auth-side__brand p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: #A9B4C7;
+}
+
+.auth-logo-img {
+  width: 100px;
+  height: auto;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.35));
+}
+
+.auth-logo-img--center {
+  width: 70px;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.auth-logo--center .auth-logo__mark {
+  width: 24px;
+  height: 24px;
+}
+
+.auth-side__content {
+  max-width: 380px;
+}
+
+.auth-side__content h1 {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 14px;
+}
+
+.auth-side__content p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #C7D0E0;
+  margin: 0;
+}
+
+.auth-side__features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(240, 134, 47, 0.25);
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: #E7ECF5;
+}
+
+.feature svg {
+  color: #F0862F;
+  flex-shrink: 0;
+}
+
+.auth-side__footer {
+  font-size: 12px;
+  color: #7A8499;
+  margin: 0;
+}
+
+/* ---------- Right form panel ---------- */
+
+.auth-form-wrap {
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 40px 40px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #424242 #1e1e1e;
+}
+.auth-form-wrap::-webkit-scrollbar { width: 8px; }
+.auth-form-wrap::-webkit-scrollbar-track { background: #1e1e1e; }
+.auth-form-wrap::-webkit-scrollbar-thumb { background: #424242; border-radius: 20px; }
+.auth-form-wrap::-webkit-scrollbar-thumb:hover { background: #5a5a5a; }
+.auth-form {
+  width: 100%;
+  max-width: 650px;
+  background: #FFFFFF;
+  border-radius: 16px;
+   padding: 40px 44px 36px; 
+  box-shadow: 0 20px 50px rgba(4, 12, 28, 0.08);
+}
+.auth-card {
+  width: 100%;
+  max-width: 660px;
+  height: 600px;
+  background: rgba(20, 15, 40, 0.55);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 4px;
+}
+
+.auth-form__title {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #10233F;
+  text-align: center;
+  margin: 0 0 4px;
+}
+
+.auth-form__subtitle {
+  text-align: center;
+  color: #6B7686;
+  font-size: 13.5px;
+  margin: 0 0 28px;
+}
+
+/* ---------- Form grid ---------- */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 16px;
+  margin-bottom: 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field--span2 {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #10233F;
+  margin-bottom: 6px;
+}
+
+.field-error {
+  color: #C0392B;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* ---------- Inputs ---------- */
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid #E1E5EC;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: #FBFCFE;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-group:focus-within {
+  border-color: #F0862F;
+  box-shadow: 0 0 0 3px rgba(240, 134, 47, 0.15);
+  background: #FFFFFF;
+}
+
+.input-group--error {
+  border-color: #C0392B;
+}
+
+.input-group--error:focus-within {
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.14);
+}
+
+.input-group__icon {
+  color: #8B93A3;
+  flex-shrink: 0;
+}
+
+.input-group input,
+.input-group select {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: #10233F;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.input-group select {
+  cursor: pointer;
+  appearance: none;
+}
+
+.input-group input::placeholder {
+  color: #A7AEBB;
+}
+
+.input-group__toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #8B93A3;
+  cursor: pointer;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.input-group__toggle:hover {
+  color: #10233F;
+}
+
+/* ---------- Photo picker ---------- */
+
+.photo-field {
+  margin-top: 4px;
+}
+
+.photo-picker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.photo-picker__preview {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #F0F2F6;
+  border: 1.5px dashed #C7CEDB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B93A3;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.photo-picker__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn--ghost {
+  background: #FFFFFF;
+  color: #10233F;
+  border: 1.5px solid #D8DDE7;
+  padding: 9px 16px;
+  font-size: 13px;
+}
+
+.btn--ghost:hover {
+  border-color: #F0862F;
+  color: #F0862F;
+}
+
+.btn--sm {
+  padding: 8px 14px;
+  font-size: 12.5px;
+}
+
+.btn--primary {
+  width: 100%;
+  background: #10233F;
+  color: #FFFFFF;
+  padding: 13px;
+  font-size: 15px;
+  margin-top: 22px;
+}
+
+.btn--primary:hover {
+  background: #F0862F;
+}
+
+.btn--primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ---------- Checkbox / links ---------- */
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: #3B4356;
+  cursor: pointer;
+}
+
+.checkbox--terms {
+  margin-top: 18px;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #F0862F;
+  cursor: pointer;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.link {
+  color: #F0862F;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link--strong {
+  color: #F0862F;
+}
+
+.auth-form__switch {
+  text-align: center;
+  font-size: 13.5px;
+  color: #6B7686;
+  margin: 18px 0 0;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 980px) {
+.auth-screen {
+  height: 95vh;
+  width: 100%;
+  display: flex;
+  font-family: 'Inter', system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
+}
+.auth-side {
+  flex: 0 0 38%;
+  min-height: 100vh;
+  color: #1a204e2c;
+  padding: 40px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+  .auth-side__content h1 {
+    font-size: 24px;
+  }
+
+  .auth-side__features {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .feature {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field--span2 {
+    grid-column: auto;
+  }
+
+  .auth-form {
+    padding: 30px 22px 26px;
+  }
+
+ 
+}
