@@ -43,44 +43,134 @@ const UserIcon = () => (
 
 const Login = () => {
   const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [form, setForm] = useState({ email: '', password: '', remember: true });
+
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+    remember: true,
+  });
+
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     setError('');
+
     if (!form.email || !form.password) {
       setError('Enter your email and password to continue.');
       return;
     }
-    sessionStorage.setItem("gms_logged_in", "true");
-  navigate('/');
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        'http://localhost:5000/api/auth/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: form.email.trim(),
+            password: form.password,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(
+          data.message || 'Invalid email or password'
+        );
+        return;
+      }
+
+      sessionStorage.setItem(
+        'gms_logged_in',
+        'true'
+      );
+
+      sessionStorage.setItem(
+        'gms_user',
+        JSON.stringify(data.user)
+      );
+
+      navigate('/');
+    } catch  {
+      setError(
+        'Unable to connect to the server. Make sure the backend is running.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="login-page" style={{ backgroundImage: `url(${bg1})` }}>
+    <div
+      className="login-page"
+      style={{ backgroundImage: `url(${bg1})` }}
+    >
       <div className="login-overlay" />
 
       <div className="login-content">
-       <div className="brand">
-  <img src={garageLogo} alt="JAG" className="brand-logo" />
-  <p className="brand-subtitle">Making life easier</p>
-</div>
+
+        <div className="brand">
+          <img
+            src={garageLogo}
+            alt="JAG"
+            className="brand-logo"
+          />
+
+          <p className="brand-subtitle">
+            Making life easier
+          </p>
+        </div>
 
         <div className="login-card">
-          <h2 className="card-title">Welcome Back!</h2>
-          <p className="card-subtitle">Sign in to continue to your account</p>
 
-          <form onSubmit={handleSubmit} noValidate>
-            <label className="field-label" htmlFor="email">Email address</label>
+          <h2 className="card-title">
+            Welcome Back!
+          </h2>
+
+          <p className="card-subtitle">
+            Sign in to continue to your account
+          </p>
+
+          <form
+            onSubmit={handleSubmit}
+            noValidate
+          >
+
+            <label
+              className="field-label"
+              htmlFor="email"
+            >
+              Email address
+            </label>
+
             <div className="input-wrap">
-              <span className="input-icon"><MailIcon /></span>
+
+              <span className="input-icon">
+                <MailIcon />
+              </span>
+
               <input
                 id="email"
                 name="email"
@@ -89,66 +179,130 @@ const Login = () => {
                 value={form.email}
                 onChange={handleChange}
                 autoComplete="email"
+                disabled={loading}
               />
+
             </div>
 
-            <label className="field-label" htmlFor="password">Password</label>
+            <label
+              className="field-label"
+              htmlFor="password"
+            >
+              Password
+            </label>
+
             <div className="input-wrap">
-              <span className="input-icon"><LockIcon /></span>
+
+              <span className="input-icon">
+                <LockIcon />
+              </span>
+
               <input
                 id="password"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
+                type={
+                  showPassword
+                    ? 'text'
+                    : 'password'
+                }
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={handleChange}
                 autoComplete="current-password"
+                disabled={loading}
               />
+
               <button
                 type="button"
                 className="input-action"
-                onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                onClick={() =>
+                  setShowPassword(
+                    (v) => !v
+                  )
+                }
+                aria-label={
+                  showPassword
+                    ? 'Hide password'
+                    : 'Show password'
+                }
+                disabled={loading}
               >
-                <EyeIcon open={showPassword} />
+                <EyeIcon
+                  open={showPassword}
+                />
               </button>
+
             </div>
 
-            {error && <p className="form-error">{error}</p>}
+            {error && (
+              <p className="form-error">
+                {error}
+              </p>
+            )}
 
             <div className="row-between">
+
               <label className="checkbox">
+
                 <input
                   type="checkbox"
                   name="remember"
                   checked={form.remember}
                   onChange={handleChange}
+                  disabled={loading}
                 />
-                <span>Remember me</span>
+
+                <span>
+                  Remember me
+                </span>
+
               </label>
-              <a href="/forgot-password" className="link">Forgot password?</a>
+
+              <a
+                href="/forgot-password"
+                className="link"
+              >
+                Forgot password?
+              </a>
+
             </div>
 
-            <button type="submit" className="btn-primary">Sign in</button>
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={loading}
+            >
+              {loading
+                ? 'Signing in...'
+                : 'Sign in'}
+            </button>
 
-            <div className="divider"><span>or</span></div>
+            <div className="divider">
+              <span>or</span>
+            </div>
 
             <button
               type="button"
               className="btn-secondary"
-              onClick={() => navigate('/register')}
+              onClick={() =>
+                navigate('/register')
+              }
+              disabled={loading}
             >
               <UserIcon />
               Register
             </button>
+
           </form>
         </div>
 
-        <p className="login-footer">© 2026 JAG. All rights reserved.</p>
+        <p className="login-footer">
+          © 2026 JAG. All rights reserved.
+        </p>
+
       </div>
     </div>
   );
 };
 
 export default Login;
-
