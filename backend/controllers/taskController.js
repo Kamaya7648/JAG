@@ -19,6 +19,12 @@ const addTask = (req, res) => {
     });
   }
 
+  if (days !== undefined && (!Number.isInteger(days) || days < 1)) {
+    return res.status(400).json({
+      message: "days must be a positive integer"
+    });
+  }
+
   const newTask = {
     id: `task-${taskCounter++}`,
     vehicleId,
