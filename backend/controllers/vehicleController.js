@@ -17,14 +17,29 @@ const getVehicleById = (req, res) => {
 };
 
 const addVehicle = (req, res) => {
+  const {
+    id,
+    model,
+    plate,
+    customerName,
+    customerAddress,
+    phone
+  } = req.body;
+
+  if (!id || !model || !plate || !customerName || !customerAddress || !phone) {
+    return res.status(400).json({
+      message: "All required vehicle fields must be provided"
+    });
+  }
+
   const newVehicle = {
-    id: req.body.id,
-    model: req.body.model,
-    plate: req.body.plate,
+    id: id,
+    model: model,
+    plate: plate,
     status: req.body.status || "Received",
-    customerName: req.body.customerName,
-    customerAddress: req.body.customerAddress,
-    phone: req.body.phone
+    customerName: customerName,
+    customerAddress: customerAddress,
+    phone: phone
   };
 
   vehicles.push(newVehicle);
