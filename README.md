@@ -104,5 +104,16 @@ This generates an optimized build in the `dist/` directory.
 
 ---
 
+## Roadmap
+
+- [ ] Complete MongoDB integration (replace mock data with persistent storage)
+- [ ] Password hashing and JWT/session-based authentication
+- [ ] Role-based access control (Admin, Mechanic, Customer)
+- [ ] Real-time service board updates
+- [ ] Notifications
+- [ ] Deployment
+
+---
+
 
 
