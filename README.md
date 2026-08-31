@@ -1,61 +1,123 @@
-# GarageSync — Database Management + Service Board
+# JAG — Garage Management System
 
-A two-page React app for the Fullstack Development module assignment:
+A web-based application for digitizing and managing the daily operations of a vehicle service garage — vehicle tracking, a Kanban-style service board, appointments, reports, analytics, and garage settings, all from a single dashboard.
 
-1. **Dashboard** (`/`) — a vehicle database table styled after the
-   GarageSync reference design (navy sidebar, orange accents, white
-   content area). Columns: Vehicle ID, Vehicle Model, Number Plate,
-   Vehicle Status, and a **Service Board** link per row.
-2. **Service Board** (`/board/:vehicleId`) — a Trello-style kanban board
-   for that specific vehicle's repair job. Columns represent the repair
-   pipeline (Received -> Diagnosis -> Repairing -> Quality Check ->
-   Completed); cards represent tasks, each with an editable
-   **days-to-complete** estimate.
+**Repository:** https://github.com/Kamaya7648/JAG
+
+---
+
+## Tech Stack
+
+- **Frontend:** React, Vite, JavaScript, React Router, CSS
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (installed locally; integration in progress)
+- **API Testing:** Postman
+
+---
 
 ## Features
-- Search the vehicle table live
-- Add, edit, delete, and drag-and-drop tasks between stages on each
-  vehicle's board
-- Add, rename, and delete board columns
-- Fully responsive
 
-## Tech
-React 18 + Vite + React Router, plain CSS (no UI framework), vanilla JS
-drag-and-drop (no extra library).
+- Authentication (register / login / protected routes)
+- Dashboard with quick access to all modules
+- Vehicle management (add, view, update, delete)
+- Kanban-style service board for tracking repair progress
+- Task management per vehicle
+- Report generation (mechanic performance, revenue, completion stats)
+- Calendar & appointment scheduling
+- Garage event management
+- Analytics overview
+- Supervisor profile management
+- Configurable garage settings
 
-## Run it locally
+---
+
+## Project Structure
+
+```
+JAG/
+├── backend/
+│   ├── server.js
+│   ├── routes/
+│   ├── controllers/
+│   ├── data/
+│   └── models/
+│
+├── src/                  # React frontend source
+├── public/
+├── package.json
+└── README.md
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later recommended)
+- npm
+- MongoDB (if running with database integration)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Kamaya7648/JAG.git
+cd JAG
+```
+
+### 2. Backend Setup
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+The backend runs by default at:
+```
+http://localhost:5000
+```
+
+### 3. Frontend Setup
+
+Open a new terminal at the project root:
+
 ```bash
 npm install
 npm run dev
 ```
-Then open the local URL Vite prints (usually http://localhost:5173).
 
-## Build for submission/deployment
+The frontend runs by default at:
+```
+http://localhost:5173
+```
+
+Make sure the frontend's API base URL points to the running backend (check your `.env` or API config file).
+
+### 4. Production Build
+
 ```bash
 npm run build
 ```
-Output goes to `dist/`.
 
-## Project structure
+This generates an optimized build in the `dist/` directory.
+
+---
+
+## Test Account
+
 ```
-src/
-  App.jsx                 route definitions (Dashboard, Board)
-  App.css                 all styling (navy / orange / white theme)
-  data.js                 sample vehicle data + status colors + board template
-  pages/
-    Dashboard.jsx           vehicle table + sidebar layout
-    Board.jsx                per-vehicle kanban board
-  components/
-    Sidebar.jsx              navy sidebar nav
-    Column.jsx               a single board stage
-    Card.jsx                  a single task (edit/delete, days-to-complete)
-    AddColumn.jsx             control for adding a new stage
+Email:    test@gmail.com
+Password: 123456
+Role:     Garage Supervisor
 ```
 
-## Notes for the write-up
-- Vehicle data lives in `data.js` as a static array -- swap this for an
-  API call when you wire up a backend.
-- Each vehicle gets its own board state, generated from a template
-  based on its current status (`buildDefaultBoard` in `data.js`).
-- Board state is in-memory only (resets on refresh) -- add
-  localStorage or a backend to persist it.
+## Testing
+
+Backend endpoints were tested using Postman and PowerShell's `Invoke-RestMethod`. All modules (auth, vehicles, tasks, reports, calendar, events, analytics, profile, settings) passed functional testing with mock data.
+
+---
+
+
+
+
