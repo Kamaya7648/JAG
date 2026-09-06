@@ -1,31 +1,40 @@
 const Vehicle = require("../models/Vehicle");
 
-async function getVehicles(req, res) {
+const getVehicles = async (req, res) => {
   try {
     const vehicles = await Vehicle.find().sort({ createdAt: 1 });
-    return res.status(200).json(vehicles);
+
+    res.status(200).json(vehicles);
   } catch (err) {
     console.error("Get vehicles error:", err);
-    return res.status(500).json({ message: "Failed to fetch vehicles." });
-  }
-}
 
-async function getVehicleById(req, res) {
+    res.status(500).json({
+      message: "Failed to fetch vehicles."
+    });
+  }
+};
+
+const getVehicleById = async (req, res) => {
   try {
     const vehicle = await Vehicle.findOne({ id: req.params.id });
 
     if (!vehicle) {
-      return res.status(404).json({ message: "Vehicle not found" });
+      return res.status(404).json({
+        message: "Vehicle not found"
+      });
     }
 
-    return res.status(200).json(vehicle);
+    res.status(200).json(vehicle);
   } catch (err) {
     console.error("Get vehicle error:", err);
-    return res.status(500).json({ message: "Failed to fetch vehicle." });
-  }
-}
 
-async function createVehicle(req, res) {
+    res.status(500).json({
+      message: "Failed to fetch vehicle."
+    });
+  }
+};
+
+const addVehicle = async (req, res) => {
   try {
     const {
       id,
@@ -34,19 +43,21 @@ async function createVehicle(req, res) {
       status,
       customerName,
       customerAddress,
-      phone,
+      phone
     } = req.body;
 
     if (!id || !model || !plate || !customerName || !customerAddress || !phone) {
-      return res.status(400).json({ message: "Missing required fields." });
+      return res.status(400).json({
+        message: "All required vehicle fields must be provided"
+      });
     }
 
     const existing = await Vehicle.findOne({ id });
 
     if (existing) {
-      return res
-        .status(409)
-        .json({ message: `Vehicle ID "${id}" is already in use.` });
+      return res.status(409).json({
+        message: `Vehicle ID "${id}" is already in use.`
+      });
     }
 
     const vehicle = await Vehicle.create({
@@ -56,14 +67,78 @@ async function createVehicle(req, res) {
       status,
       customerName,
       customerAddress,
-      phone,
+      phone
     });
 
-    return res.status(201).json(vehicle);
+    res.status(201).json({
+      message: "Vehicle added successfully",
+      vehicle
+    });
   } catch (err) {
-    console.error("Create vehicle error:", err);
-    return res.status(500).json({ message: "Failed to add vehicle." });
-  }
-}
+    console.error("Add vehicle error:", err);
 
-module.exports = { getVehicles, getVehicleById, createVehicle };
+    res.status(500).json({
+      message: "Failed to add vehicle."
+    });
+  }
+};
+
+const updateVehicle = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findOne({ id: req.params.id });
+
+    if (!vehicle) {
+      return res.status(404).json({
+        message: "Vehicle not found"
+      });
+    }
+
+    Object.assign(vehicle, req.body);
+
+    await vehicle.save();
+
+    res.json({
+      message: "Vehicle updated successfully",
+      vehicle
+    });
+  } catch (err) {
+    console.error("Update vehicle error:", err);
+
+    res.status(500).json({
+      message: "Failed to update vehicle."
+    });
+  }
+};
+
+const deleteVehicle = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findOneAndDelete({
+      id: req.params.id
+    });
+
+    if (!vehicle) {
+      return res.status(404).json({
+        message: "Vehicle not found"
+      });
+    }
+
+    res.json({
+      message: "Vehicle deleted successfully",
+      vehicle
+    });
+  } catch (err) {
+    console.error("Delete vehicle error:", err);
+
+    res.status(500).json({
+      message: "Failed to delete vehicle."
+    });
+  }
+};
+
+module.exports = {
+  getVehicles,
+  getVehicleById,
+  addVehicle,
+  updateVehicle,
+  deleteVehicle
+};
