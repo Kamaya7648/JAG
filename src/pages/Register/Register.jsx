@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import regbg from '../../assets/images/regbg.jpg';
 import './Register.css';
-
 const DEPARTMENTS = [
   'General Services',
   'Body & Paint',
