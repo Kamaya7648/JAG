@@ -1,8 +1,8 @@
-# Garage Management System (GMS)
+# JAG - Garage and Workshop Management System
 
 ## Assignment 03 – Working Full-Stack Application
 
-Garage Management System (GMS) is a full-stack web application developed to manage the daily operations of a vehicle garage. The system provides a centralized platform for supervisors and garage staff to manage vehicles, service tasks, appointments, reports, analytics, profiles, and garage settings.
+Garage and Workshop Management System named JAG is a full-stack web application developed to manage the daily operations of a vehicle garage. The system provides a centralized platform for supervisors and garage staff to manage vehicles, service tasks, appointments, reports, analytics, profiles, and garage settings.
 
 The application consists of a React frontend, Node.js and Express backend REST APIs, and MongoDB database integration.
 
@@ -10,7 +10,7 @@ The application consists of a React frontend, Node.js and Express backend REST A
 
 # 1. Project Introduction
 
-The Garage Management System is designed to improve the efficiency of garage operations by replacing manual vehicle and service management processes with a centralized digital system.
+The Garage and Workshop Management System is designed to improve the efficiency of garage operations by replacing manual vehicle and service management processes with a centralized digital system.
 
 The system allows garage supervisors to:
 
