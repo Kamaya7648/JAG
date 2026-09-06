@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, X, Plus, Trash2 } from "lucide-react";
 import { STATUS_STYLES } from "../data.js";
 
@@ -83,6 +83,21 @@ export default function Calendar() {
   const [qaStatus, setQaStatus] = useState("Meeting");
   const [viewingEvent, setViewingEvent] = useState(null); // { key, event }
 
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events")
+      .then((res) => res.json())
+      .then((data) => {
+        const grouped = {};
+        (data || []).forEach((ev) => {
+          const list = grouped[ev.date] ? [...grouped[ev.date]] : [];
+          list.push({ id: ev.id, startHour: ev.startHour, duration: ev.duration, text: ev.text, status: ev.status });
+          grouped[ev.date] = list;
+        });
+        setEvents(grouped);
+      })
+      .catch(() => {});
+  }, []);
+
   const miniYear = miniViewDate.getFullYear();
   const miniMonth = miniViewDate.getMonth();
 
@@ -144,13 +159,25 @@ export default function Calendar() {
 
   const addEvent = (key, { hour, duration, text, status }) => {
     if (!text || text.trim() === "") return;
-    setEvents((prev) => {
-      const updated = { ...prev };
-      const list = updated[key] ? [...updated[key]] : [];
-      list.push({ id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, startHour: hour, duration, text: text.trim(), status });
-      updated[key] = list;
-      return updated;
-    });
+
+    fetch("http://localhost:5000/api/events", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: key, startHour: hour, duration, text: text.trim(), status }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const ev = data.event;
+        if (!ev) return;
+        setEvents((prev) => {
+          const updated = { ...prev };
+          const list = updated[key] ? [...updated[key]] : [];
+          list.push({ id: ev.id, startHour: ev.startHour, duration: ev.duration, text: ev.text, status: ev.status });
+          updated[key] = list;
+          return updated;
+        });
+      })
+      .catch(() => {});
   };
 
   const openAddForm = (key, hour) => {
@@ -168,13 +195,17 @@ export default function Calendar() {
   };
 
   const handleDeleteEvent = (key, id) => {
-    setEvents((prev) => {
-      const updated = { ...prev };
-      const list = updated[key].filter((e) => e.id !== id);
-      if (list.length === 0) delete updated[key];
-      else updated[key] = list;
-      return updated;
-    });
+    fetch(`http://localhost:5000/api/events/${id}`, { method: "DELETE" })
+      .then(() => {
+        setEvents((prev) => {
+          const updated = { ...prev };
+          const list = updated[key].filter((e) => e.id !== id);
+          if (list.length === 0) delete updated[key];
+          else updated[key] = list;
+          return updated;
+        });
+      })
+      .catch(() => {});
   };
 
   const openQuickAdd = () => {

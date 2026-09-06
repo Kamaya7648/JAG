@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bg1 from '../../assets/images/bg1.jpg';
 import garageLogo from '../../assets/icons/garage-logo.svg';
+import { useApp, normalizeUser } from '../../context/AppContext';
 import './Login.css';
 
 const EyeIcon = ({ open }) => (
@@ -43,6 +44,7 @@ const UserIcon = () => (
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUser } = useApp();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -111,6 +113,12 @@ const Login = () => {
         'gms_user',
         JSON.stringify(data.user)
       );
+
+      sessionStorage.removeItem(
+        'gms_welcome_greeting_shown'
+      );
+
+      setUser(normalizeUser(data.user));
 
       navigate('/');
     } catch  {

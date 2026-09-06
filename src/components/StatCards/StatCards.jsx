@@ -45,11 +45,14 @@ function StatCards() {
     revenue: null,
   });
 
-  const vehiclesToday = vehicles.filter((v) => v.status === "today").length;
-  const inRepair = vehicles.filter((v) => v.status === "repair").length;
-  const completed = vehicles.filter((v) => v.status === "completed").length;
+  const todayStr = dateKey(new Date());
+  const vehiclesToday = vehicles.filter(
+    (v) => v.createdAt && dateKey(new Date(v.createdAt)) === todayStr
+  ).length;
+  const inRepair = vehicles.filter((v) => v.status === "Repairing").length;
+  const completed = vehicles.filter((v) => v.status === "Completed").length;
   const monthlyRevenue = vehicles
-    .filter((v) => v.status === "completed")
+    .filter((v) => v.status === "Completed")
     .reduce((sum, v) => sum + (v.revenue || 0), 0);
 
   useEffect(() => {
