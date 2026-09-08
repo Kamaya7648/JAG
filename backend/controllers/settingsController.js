@@ -1,4 +1,4 @@
-const Settings = require("../models/Settings");
+const Settings = require('../../database/models/Settings');
 
 // Get the single garage settings document.
 // If it does not exist yet, create it with the default values.

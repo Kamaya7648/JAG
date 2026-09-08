@@ -1,4 +1,4 @@
-const Task = require("../models/Task");
+const Task = require('../../database/models/Task');
 
 async function getTasksByVehicle(req, res) {
   try {

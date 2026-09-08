@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const connectDB = require("./config/db");
+const connectDB = require("../database/config/db");
 
 const authRoutes = require("./routes/authRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
@@ -33,6 +33,6 @@ const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`GMS Backend running on http://localhost:${PORT}`);
+    console.log(`JAG Backend running on http://localhost:${PORT}`);
   });
 });
