@@ -36,7 +36,7 @@ export default function Dashboard() {
 
         const data = await response.json()
         setVehicles(data)
-      } catch (err) {
+      } console.error(err) {
         setError('Unable to load vehicles')
       } finally {
         setLoading(false)
