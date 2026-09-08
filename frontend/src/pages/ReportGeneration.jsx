@@ -2,7 +2,7 @@ import garageLogoNavy from "../assets/icons/garage-logo-navy.svg";
 import { useState, useMemo } from "react";
 import Sidebar from "../components/Sidebar.jsx"
 import {
-  Gauge, Wrench, Car, Users, Package, ClipboardList, Settings, LifeBuoy,
+  Settings, LifeBuoy,
   Search, Bell, ChevronDown, Download, Eye, Trash2, ArrowUp, ArrowDown,
   Calendar, FileDown, ArrowRight, ChevronRight, PlusCircle, FileBarChart,
   FileText, Filter, Repeat2, Layers
