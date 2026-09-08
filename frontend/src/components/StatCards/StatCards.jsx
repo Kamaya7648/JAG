@@ -33,7 +33,7 @@ function loadJSON(key) {
 function saveJSON(key, obj) {
   try {
     localStorage.setItem(key, JSON.stringify(obj));
-  } catch {}
+  } 
 }
 
 function StatCards() {
