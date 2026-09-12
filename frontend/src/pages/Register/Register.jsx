@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import regbg from '../../assets/images/regbg.jpg';
 import './Register.css';
+
 const DEPARTMENTS = [
   'General Services',
   'Body & Paint',
@@ -43,6 +44,11 @@ const initialForm = {
   agree: false,
 };
 
+const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
+const employeeIdRegex = /^\d{3,}$/;
+const phoneRegex = /^\d{10}$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 const Register = () => {
   const navigate = useNavigate();
 
@@ -52,19 +58,104 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const validateField = (name, value) => {
+    let error = '';
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    if (name === 'firstName') {
+      if (!value.trim()) {
+        error = 'First name is required';
+      } else if (!nameRegex.test(value.trim())) {
+        error = 'Enter a valid first name';
+      }
+    }
+
+    if (name === 'lastName') {
+      if (!value.trim()) {
+        error = 'Last name is required';
+      } else if (!nameRegex.test(value.trim())) {
+        error = 'Enter a valid last name';
+      }
+    }
+
+    if (name === 'employeeId') {
+      if (!value.trim()) {
+        error = 'Employee ID is required';
+      } else if (!employeeIdRegex.test(value.trim())) {
+        error = 'Use the format 001';
+      }
+    }
+
+    if (name === 'phone') {
+      if (!value.trim()) {
+        error = 'Phone number is required';
+      } else if (!phoneRegex.test(value.trim())) {
+        error = 'Enter a valid 10-digit phone number';
+      }
+    }
+
+    if (name === 'email') {
+      if (!value.trim()) {
+        error = 'Email address is required';
+      } else if (!emailRegex.test(value.trim())) {
+        error = 'Enter a valid email, e.g. name@gmail.com';
+      }
+    }
+
+    if (name === 'department') {
+      if (!value) {
+        error = 'Please select a department';
+      }
+    }
+
+    if (name === 'tempPassword') {
+      if (!value.trim()) {
+        error = 'Temporary password is required';
+      } else if (value.length < 8) {
+        error = 'Password must be at least 8 characters';
+      }
+    }
+
+    if (name === 'agree') {
+      if (!value) {
+        error = 'You must accept the Terms & Conditions';
+      }
+    }
 
     setErrors((prev) => ({
       ...prev,
-      [name]: '',
+      [name]: error,
+    }));
+
+    return error === '';
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    const newValue = type === 'checkbox' ? checked : value;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: newValue,
+    }));
+
+    if (errors[name]) {
+      validateField(name, newValue);
+    }
+
+    setErrors((prev) => ({
+      ...prev,
       submit: '',
     }));
+  };
+
+  const handleBlur = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    validateField(
+      name,
+      type === 'checkbox' ? checked : value
+    );
   };
 
   const handlePhoto = (e) => {
@@ -78,37 +169,84 @@ const Register = () => {
   const validate = () => {
     const next = {};
 
-    if (!form.firstName.trim()) {
-      next.firstName = 'Required';
-    }
+    const fields = [
+      'firstName',
+      'lastName',
+      'employeeId',
+      'phone',
+      'email',
+      'department',
+      'tempPassword',
+    ];
 
-    if (!form.lastName.trim()) {
-      next.lastName = 'Required';
-    }
+    fields.forEach((field) => {
+      let value = form[field];
 
-    if (!form.employeeId.trim()) {
-      next.employeeId = 'Required';
-    }
+      if (typeof value === 'string') {
+        value = value.trim();
+      }
 
-    if (!form.phone.trim()) {
-      next.phone = 'Required';
-    }
+      if (field === 'firstName') {
+        if (!value) {
+          next.firstName = 'First name is required';
+        } else if (!nameRegex.test(value)) {
+          next.firstName = 'Enter a valid first name';
+        }
+      }
 
-    if (!form.email.trim()) {
-      next.email = 'Required';
-    }
+      if (field === 'lastName') {
+        if (!value) {
+          next.lastName = 'Last name is required';
+        } else if (!nameRegex.test(value)) {
+          next.lastName = 'Enter a valid last name';
+        }
+      }
 
-    if (!form.department) {
-      next.department = 'Required';
-    }
+      if (field === 'employeeId') {
+        if (!value) {
+          next.employeeId = 'Employee ID is required';
+        } else if (!employeeIdRegex.test(value)) {
+          next.employeeId = 'Use the format EMP-001';
+        }
+      }
 
-    if (!form.tempPassword.trim()) {
-      next.tempPassword =
-        'Enter the temporary password given by your company';
-    }
+      if (field === 'phone') {
+        if (!value) {
+          next.phone = 'Phone number is required';
+        } else if (!phoneRegex.test(value)) {
+          next.phone = 'Enter a valid 10-digit phone number';
+        }
+      }
+
+      if (field === 'email') {
+        if (!value) {
+          next.email = 'Email address is required';
+        } else if (!emailRegex.test(value)) {
+          next.email =
+            'Enter a valid email, e.g. name@gmail.com';
+        }
+      }
+
+      if (field === 'department') {
+        if (!value) {
+          next.department = 'Please select a department';
+        }
+      }
+
+      if (field === 'tempPassword') {
+        if (!value) {
+          next.tempPassword =
+            'Temporary password is required';
+        } else if (value.length < 8) {
+          next.tempPassword =
+            'Password must be at least 8 characters';
+        }
+      }
+    });
 
     if (!form.agree) {
-      next.agree = 'You must accept the Terms & Conditions';
+      next.agree =
+        'You must accept the Terms & Conditions';
     }
 
     setErrors(next);
@@ -119,16 +257,13 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validate()) {
+    const isValid = validate();
+
+    if (!isValid) {
       return;
     }
 
     setSubmitting(true);
-
-    setErrors((prev) => ({
-      ...prev,
-      submit: '',
-    }));
 
     try {
       const response = await fetch(
@@ -140,8 +275,13 @@ const Register = () => {
           },
           body: JSON.stringify({
             name: `${form.firstName.trim()} ${form.lastName.trim()}`,
+            employeeId: form.employeeId.trim(),
+            phone: form.phone.trim(),
             email: form.email.trim(),
+            department: form.department,
+            experience: form.experience,
             password: form.tempPassword,
+            profilePhoto: '',
           }),
         }
       );
@@ -149,18 +289,18 @@ const Register = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || 'Registration failed'
-        );
+        setErrors({
+          submit: data.message || 'Registration failed',
+        });
+        return;
       }
 
       navigate('/login');
-    } catch (err) {
-      setErrors((prev) => ({
-        ...prev,
+    } catch {
+      setErrors({
         submit:
-          err.message || 'Unable to create account',
-      }));
+          'Unable to connect to the server. Make sure the backend is running.',
+      });
     } finally {
       setSubmitting(false);
     }
@@ -234,12 +374,23 @@ const Register = () => {
               Fill in your details to get started
             </p>
 
+            {errors.submit && (
+              <div className="register-error">
+                {errors.submit}
+              </div>
+            )}
+
+            {Object.keys(errors).some(
+              (key) => key !== 'submit' && errors[key]
+            ) && (
+              <div className="register-error">
+                Please fix the errors below.
+              </div>
+            )}
+
             <div className="form-grid">
               <div className="field">
-                <label
-                  className="field-label"
-                  htmlFor="firstName"
-                >
+                <label className="field-label" htmlFor="firstName">
                   First Name
                 </label>
 
@@ -261,6 +412,8 @@ const Register = () => {
                     placeholder="Enter first name"
                     value={form.firstName}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={submitting}
                   />
                 </div>
 
@@ -272,10 +425,7 @@ const Register = () => {
               </div>
 
               <div className="field">
-                <label
-                  className="field-label"
-                  htmlFor="lastName"
-                >
+                <label className="field-label" htmlFor="lastName">
                   Last Name
                 </label>
 
@@ -297,6 +447,8 @@ const Register = () => {
                     placeholder="Enter last name"
                     value={form.lastName}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={submitting}
                   />
                 </div>
 
@@ -308,10 +460,7 @@ const Register = () => {
               </div>
 
               <div className="field">
-                <label
-                  className="field-label"
-                  htmlFor="employeeId"
-                >
+                <label className="field-label" htmlFor="employeeId">
                   Employee ID
                 </label>
 
@@ -330,9 +479,11 @@ const Register = () => {
                   <input
                     id="employeeId"
                     name="employeeId"
-                    placeholder="EMP-001"
+                    placeholder="001"
                     value={form.employeeId}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={submitting}
                   />
                 </div>
 
@@ -344,10 +495,7 @@ const Register = () => {
               </div>
 
               <div className="field">
-                <label
-                  className="field-label"
-                  htmlFor="phone"
-                >
+                <label className="field-label" htmlFor="phone">
                   Phone Number
                 </label>
 
@@ -366,9 +514,14 @@ const Register = () => {
                   <input
                     id="phone"
                     name="phone"
+                    type="tel"
+                    inputMode="numeric"
+                    maxLength={10}
                     placeholder="+94 77 123 4567"
                     value={form.phone}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={submitting}
                   />
                 </div>
 
@@ -380,10 +533,7 @@ const Register = () => {
               </div>
 
               <div className="field field--span2">
-                <label
-                  className="field-label"
-                  htmlFor="email"
-                >
+                <label className="field-label" htmlFor="email">
                   Email Address
                 </label>
 
@@ -406,6 +556,9 @@ const Register = () => {
                     placeholder="Enter your email"
                     value={form.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    autoComplete="email"
+                    disabled={submitting}
                   />
                 </div>
 
@@ -417,10 +570,7 @@ const Register = () => {
               </div>
 
               <div className="field">
-                <label
-                  className="field-label"
-                  htmlFor="department"
-                >
+                <label className="field-label" htmlFor="department">
                   Department
                 </label>
 
@@ -441,6 +591,8 @@ const Register = () => {
                     name="department"
                     value={form.department}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={submitting}
                   >
                     <option value="">
                       Select department
@@ -462,10 +614,7 @@ const Register = () => {
               </div>
 
               <div className="field">
-                <label
-                  className="field-label"
-                  htmlFor="experience"
-                >
+                <label className="field-label" htmlFor="experience">
                   Years of Experience
                 </label>
 
@@ -480,6 +629,7 @@ const Register = () => {
                     name="experience"
                     value={form.experience}
                     onChange={handleChange}
+                    disabled={submitting}
                   >
                     <option value="">
                       Select experience
@@ -495,10 +645,7 @@ const Register = () => {
               </div>
 
               <div className="field field--span2">
-                <label
-                  className="field-label"
-                  htmlFor="tempPassword"
-                >
+                <label className="field-label" htmlFor="tempPassword">
                   Temporary Password
                 </label>
 
@@ -517,29 +664,22 @@ const Register = () => {
                   <input
                     id="tempPassword"
                     name="tempPassword"
-                    type={
-                      showPassword
-                        ? 'text'
-                        : 'password'
-                    }
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter the temporary password given by your company"
                     value={form.tempPassword}
                     onChange={handleChange}
+                    onBlur={handleBlur}
+                    autoComplete="new-password"
+                    disabled={submitting}
                   />
 
                   <button
                     type="button"
                     className="input-group__toggle"
                     onClick={() =>
-                      setShowPassword(
-                        (s) => !s
-                      )
+                      setShowPassword((s) => !s)
                     }
-                    aria-label={
-                      showPassword
-                        ? 'Hide password'
-                        : 'Show password'
-                    }
+                    disabled={submitting}
                   >
                     {showPassword ? (
                       <EyeOff size={18} />
@@ -562,8 +702,8 @@ const Register = () => {
                     marginTop: '6px',
                   }}
                 >
-                  You'll be asked to set a new password
-                  after your first login.
+                  You'll be asked to set a new password after
+                  your first login.
                 </span>
               </div>
 
@@ -593,6 +733,7 @@ const Register = () => {
                       accept="image/*"
                       hidden
                       onChange={handlePhoto}
+                      disabled={submitting}
                     />
                   </label>
                 </div>
@@ -605,6 +746,8 @@ const Register = () => {
                 name="agree"
                 checked={form.agree}
                 onChange={handleChange}
+                onBlur={handleBlur}
+                disabled={submitting}
               />
 
               <span>
@@ -621,12 +764,6 @@ const Register = () => {
             {errors.agree && (
               <span className="field-error">
                 {errors.agree}
-              </span>
-            )}
-
-            {errors.submit && (
-              <span className="field-error">
-                {errors.submit}
               </span>
             )}
 

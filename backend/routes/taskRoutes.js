@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   getTasksByVehicle,
   createTask,
@@ -7,7 +8,11 @@ const {
   deleteTask,
 } = require("../controllers/taskController");
 
+const authMiddleware = require("../middleware/authMiddleware");
+
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.get("/:vehicleId", getTasksByVehicle);
 router.post("/", createTask);

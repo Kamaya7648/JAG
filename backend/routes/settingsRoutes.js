@@ -3,8 +3,11 @@ const {
   getSettings,
   updateSettings,
 } = require("../controllers/settingsController");
+const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.get("/", getSettings);
 router.put("/", updateSettings);

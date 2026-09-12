@@ -1,12 +1,32 @@
 const Settings = require('../../database/models/Settings');
 
-// Get the single garage settings document.
-// If it does not exist yet, create it with the default values.
-const getOrCreateSettings = async () => {
-  let settings = await Settings.findOne();
+const DEFAULT_SETTINGS = {
+  garageName: "AutoCare Garage",
+  address: "123, Main Road, Colombo, Sri Lanka",
+  phone: "+94 77 123 4567",
+  currency: "LKR",
+  dateFormat: "DD MMM YYYY",
+  timeFormat: "12",
+  timezone: "Colombo",
+  language: "English",
+  emailNotifications: true,
+  autoBackup: true,
+  lowStockAlert: true,
+  jobCompletionAlert: true,
+  darkMode: false,
+  vehiclesPerPage: "10",
+  defaultView: "Assigned Vehicles",
+  compactSidebar: false,
+};
+
+const getOrCreateSettings = async (userId) => {
+  let settings = await Settings.findOne({ owner: userId });
 
   if (!settings) {
-    settings = await Settings.create({});
+    settings = await Settings.create({
+      ...DEFAULT_SETTINGS,
+      owner: userId,
+    });
   }
 
   return settings;
@@ -14,40 +34,38 @@ const getOrCreateSettings = async () => {
 
 const getSettings = async (req, res) => {
   try {
-    const settings = await getOrCreateSettings();
-
-    res.status(200).json(settings);
-  } catch (err) {
-    console.error("Get settings error:", err);
-
+    const settings = await getOrCreateSettings(req.user.id);
+    res.json(settings);
+  } catch (error) {
+    console.error("Get settings error:", error);
     res.status(500).json({
-      message: "Failed to fetch settings."
+      message: "Failed to load settings.",
     });
   }
 };
 
 const updateSettings = async (req, res) => {
   try {
-    const settings = await getOrCreateSettings();
+    const settings = await getOrCreateSettings(req.user.id);
 
-    Object.assign(settings, req.body);
+    Object.keys(req.body).forEach((key) => {
+      if (key !== "owner" && key !== "_id") {
+        settings[key] = req.body[key];
+      }
+    });
 
     await settings.save();
 
-    res.status(200).json({
-      message: "Settings updated successfully",
-      settings
-    });
-  } catch (err) {
-    console.error("Update settings error:", err);
-
+    res.json(settings);
+  } catch (error) {
+    console.error("Update settings error:", error);
     res.status(500).json({
-      message: "Failed to update settings."
+      message: "Failed to update settings.",
     });
   }
 };
 
 module.exports = {
   getSettings,
-  updateSettings
+  updateSettings,
 };

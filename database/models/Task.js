@@ -2,10 +2,36 @@ const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema(
   {
-    vehicleId: { type: String, required: true, trim: true, index: true },
-    text: { type: String, required: true, trim: true },
-    days: { type: Number, default: 1, min: 1 },
-    columnId: { type: String, required: true },
+    vehicleId: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
+
+    text: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    days: {
+      type: Number,
+      default: 1,
+      min: 1,
+    },
+
+    columnId: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
@@ -15,6 +41,7 @@ taskSchema.set("toJSON", {
     ret.id = ret._id.toString();
     delete ret._id;
     delete ret.__v;
+    delete ret.owner;
     return ret;
   },
 });

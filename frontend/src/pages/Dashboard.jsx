@@ -2,6 +2,7 @@
 import { useNavigate } from 'react-router-dom'
 import ColumnFilter from '../components/ColumnFilter.jsx'
 import { STATUS_STYLES } from '../data.js'
+import { useApp } from '../context/AppContext.jsx'
 
 const COLUMNS = [
   { key: 'id', label: 'Vehicle ID' },
@@ -15,6 +16,7 @@ const COLUMNS = [
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const { token } = useApp()
 
   const [vehicles, setVehicles] = useState([])
   const [search, setSearch] = useState('')
@@ -25,10 +27,22 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchVehicles = async () => {
+      if (!token) {
+        setVehicles([])
+        setLoading(false)
+        setError('Please log in again.')
+        return
+      }
+
       try {
         setLoading(true)
+        setError('')
 
-        const response = await fetch('http://localhost:5000/api/vehicles')
+        const response = await fetch('http://localhost:5000/api/vehicles', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
         if (!response.ok) {
           throw new Error('Failed to fetch vehicles')
@@ -37,7 +51,7 @@ export default function Dashboard() {
         const data = await response.json()
         setVehicles(data)
       } catch (err) {
-        console.error(err)
+        console.error('Get vehicles error:', err)
         setError('Unable to load vehicles')
       } finally {
         setLoading(false)
@@ -45,7 +59,7 @@ export default function Dashboard() {
     }
 
     fetchVehicles()
-  }, [])
+  }, [token])
 
   const optionsFor = (key) => [
     ...new Set(vehicles.map((v) => v[key]))

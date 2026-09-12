@@ -5,10 +5,14 @@ const {
   getVehicleById,
   addVehicle,
   updateVehicle,
-  deleteVehicle
+  deleteVehicle,
 } = require("../controllers/vehicleController");
 
+const authMiddleware = require("../middleware/authMiddleware");
+
 const router = express.Router();
+
+router.use(authMiddleware);
 
 router.get("/", getVehicles);
 router.get("/:id", getVehicleById);

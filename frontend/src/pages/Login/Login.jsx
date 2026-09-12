@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import bg1 from '../../assets/images/bg1.jpg';
 import garageLogo from '../../assets/icons/garage-logo.svg';
-import { useApp, normalizeUser } from '../../context/AppContext';
 import './Login.css';
+import { useApp } from '../../context/AppContext';
 
 const EyeIcon = ({ open }) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -44,16 +44,14 @@ const UserIcon = () => (
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUser } = useApp();
+  const { login } = useApp();
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [form, setForm] = useState({
     email: '',
     password: '',
-    remember: true,
+    remember: true
   });
-
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +60,7 @@ const Login = () => {
 
     setForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : value
     }));
 
     setError('');
@@ -70,7 +68,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError('');
 
     if (!form.email || !form.password) {
@@ -81,100 +78,64 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        'http://localhost:5000/api/auth/login',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: form.email.trim(),
-            password: form.password,
-          }),
-        }
-      );
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: form.email.trim(),
+          password: form.password
+        })
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(
-          data.message || 'Invalid email or password'
-        );
+        setError(data.message || 'Invalid email or password.');
         return;
       }
 
-      sessionStorage.setItem(
-        'gms_logged_in',
-        'true'
-      );
+      if (!data.token || !data.user) {
+        setError('Login response is missing authentication details.');
+        return;
+      }
 
-      sessionStorage.setItem(
-        'gms_user',
-        JSON.stringify(data.user)
-      );
+      login(data.user, data.token);
 
-      sessionStorage.removeItem(
-        'gms_welcome_greeting_shown'
-      );
-
-      setUser(normalizeUser(data.user));
+      if (form.remember) {
+        sessionStorage.setItem('gms_logged_in', 'true');
+      }
 
       navigate('/');
-    } catch  {
-      setError(
-        'Unable to connect to the server. Make sure the backend is running.'
-      );
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Unable to connect to the server. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div
-      className="login-page"
-      style={{ backgroundImage: `url(${bg1})` }}
-    >
+    <div className="login-page" style={{ backgroundImage: `url(${bg1})` }}>
       <div className="login-overlay" />
 
       <div className="login-content">
-
         <div className="brand">
-          <img
-            src={garageLogo}
-            alt="JAG"
-            className="brand-logo"
-          />
-
-          <p className="brand-subtitle">
-            Making life easier
-          </p>
+          <img src={garageLogo} alt="JAG" className="brand-logo" />
+          <p className="brand-subtitle">Making life easier</p>
         </div>
 
         <div className="login-card">
+          <h2 className="card-title">Welcome Back!</h2>
+          <p className="card-subtitle">Sign in to continue to your account</p>
 
-          <h2 className="card-title">
-            Welcome Back!
-          </h2>
-
-          <p className="card-subtitle">
-            Sign in to continue to your account
-          </p>
-
-          <form
-            onSubmit={handleSubmit}
-            noValidate
-          >
-
-            <label
-              className="field-label"
-              htmlFor="email"
-            >
+          <form onSubmit={handleSubmit} noValidate>
+            <label className="field-label" htmlFor="email">
               Email address
             </label>
 
             <div className="input-wrap">
-
               <span className="input-icon">
                 <MailIcon />
               </span>
@@ -187,20 +148,14 @@ const Login = () => {
                 value={form.email}
                 onChange={handleChange}
                 autoComplete="email"
-                disabled={loading}
               />
-
             </div>
 
-            <label
-              className="field-label"
-              htmlFor="password"
-            >
+            <label className="field-label" htmlFor="password">
               Password
             </label>
 
             <div className="input-wrap">
-
               <span className="input-icon">
                 <LockIcon />
               </span>
@@ -208,71 +163,39 @@ const Login = () => {
               <input
                 id="password"
                 name="password"
-                type={
-                  showPassword
-                    ? 'text'
-                    : 'password'
-                }
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={handleChange}
                 autoComplete="current-password"
-                disabled={loading}
               />
 
               <button
                 type="button"
                 className="input-action"
-                onClick={() =>
-                  setShowPassword(
-                    (v) => !v
-                  )
-                }
-                aria-label={
-                  showPassword
-                    ? 'Hide password'
-                    : 'Show password'
-                }
-                disabled={loading}
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
-                <EyeIcon
-                  open={showPassword}
-                />
+                <EyeIcon open={showPassword} />
               </button>
-
             </div>
 
-            {error && (
-              <p className="form-error">
-                {error}
-              </p>
-            )}
+            {error && <p className="form-error">{error}</p>}
 
             <div className="row-between">
-
               <label className="checkbox">
-
                 <input
                   type="checkbox"
                   name="remember"
                   checked={form.remember}
                   onChange={handleChange}
-                  disabled={loading}
                 />
-
-                <span>
-                  Remember me
-                </span>
-
+                <span>Remember me</span>
               </label>
 
-              <a
-                href="/forgot-password"
-                className="link"
-              >
+              <a href="/forgot-password" className="link">
                 Forgot password?
               </a>
-
             </div>
 
             <button
@@ -280,9 +203,7 @@ const Login = () => {
               className="btn-primary"
               disabled={loading}
             >
-              {loading
-                ? 'Signing in...'
-                : 'Sign in'}
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
 
             <div className="divider">
@@ -292,22 +213,17 @@ const Login = () => {
             <button
               type="button"
               className="btn-secondary"
-              onClick={() =>
-                navigate('/register')
-              }
-              disabled={loading}
+              onClick={() => navigate('/register')}
             >
               <UserIcon />
               Register
             </button>
-
           </form>
         </div>
 
         <p className="login-footer">
           © 2026 JAG. All rights reserved.
         </p>
-
       </div>
     </div>
   );

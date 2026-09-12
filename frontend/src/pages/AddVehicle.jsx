@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useApp } from '../context/AppContext'
 
 const STATUS_OPTIONS = ['Received', 'Diagnosis', 'Repairing', 'Quality Check', 'Completed']
 
 export default function AddVehicle() {
   const navigate = useNavigate()
+  const { token } = useApp()
 
   const [form, setForm] = useState({
     id: '',
@@ -34,10 +36,15 @@ export default function AddVehicle() {
     setLoading(true)
 
     try {
+      if (!token) {
+        throw new Error('Please log in again.')
+      }
+
       const response = await fetch('http://localhost:5000/api/vehicles', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(form),
       })

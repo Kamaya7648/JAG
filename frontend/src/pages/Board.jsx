@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import Column from '../components/Column.jsx'
 import AddColumn from '../components/AddColumn.jsx'
 import { STATUS_STYLES } from '../data.js'
+import { useApp } from '../context/AppContext.jsx'
 
 let idCounter = 5000
 const nextId = () => `col-${Date.now()}-${idCounter++}`
@@ -16,6 +17,7 @@ const API_URL = 'http://localhost:5000/api'
 
 export default function Board() {
   const { vehicleId } = useParams()
+  const { token } = useApp()
 
   const [vehicle, setVehicle] = useState(null)
   const [columns, setColumns] = useState([])
@@ -68,12 +70,25 @@ export default function Board() {
 
   useEffect(() => {
     const loadBoard = async () => {
+      if (!token) {
+        setError('Please log in again.')
+        setLoading(false)
+        return
+      }
+
       try {
         setLoading(true)
         setError('')
 
+        const authHeaders = {
+          Authorization: `Bearer ${token}`,
+        }
+
         const vehicleResponse = await fetch(
-          `${API_URL}/vehicles/${vehicleId}`
+          `${API_URL}/vehicles/${vehicleId}`,
+          {
+            headers: authHeaders,
+          }
         )
 
         if (!vehicleResponse.ok) {
@@ -85,7 +100,10 @@ export default function Board() {
         setVehicle(vehicleData)
 
         const taskResponse = await fetch(
-          `${API_URL}/tasks/${vehicleId}`
+          `${API_URL}/tasks/${vehicleId}`,
+          {
+            headers: authHeaders,
+          }
         )
 
         if (!taskResponse.ok) {
@@ -103,12 +121,12 @@ export default function Board() {
         ]
 
         const boardColumns = stages.map((stage) => ({
-            id: stage,
-            title: stage,
-            cards: taskData.filter(
-              (task) => task.columnId === stage
-            ),
-         }))
+          id: stage,
+          title: stage,
+          cards: taskData.filter(
+            (task) => task.columnId === stage
+          ),
+        }))
 
         setColumns(boardColumns)
 
@@ -118,6 +136,7 @@ export default function Board() {
           )
         )
       } catch (err) {
+        console.error('Load board error:', err)
         setError(err.message || 'Failed to load board')
       } finally {
         setLoading(false)
@@ -125,7 +144,7 @@ export default function Board() {
     }
 
     loadBoard()
-  }, [vehicleId])
+  }, [vehicleId, token])
 
   const handleDragStart = (e, cardId, fromColumnId) => {
     e.dataTransfer.setData('cardId', cardId)
@@ -134,15 +153,23 @@ export default function Board() {
 
   const moveTaskInBackend = async (cardId, columnId) => {
     try {
-      await fetch(`${API_URL}/tasks/${cardId}/move`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          columnId,
-        }),
-      })
+      const response = await fetch(
+        `${API_URL}/tasks/${cardId}/move`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            columnId,
+          }),
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Failed to move task')
+      }
     } catch (err) {
       console.error('Failed to move task:', err)
     }
@@ -251,6 +278,7 @@ export default function Board() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           vehicleId,
@@ -288,6 +316,9 @@ export default function Board() {
         `${API_URL}/tasks/${cardId}`,
         {
           method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
 
@@ -325,6 +356,7 @@ export default function Board() {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             text,
@@ -365,6 +397,7 @@ export default function Board() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           vehicleId,
@@ -395,6 +428,9 @@ export default function Board() {
         `${API_URL}/tasks/${cardId}`,
         {
           method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
 
@@ -423,6 +459,7 @@ export default function Board() {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             text,
