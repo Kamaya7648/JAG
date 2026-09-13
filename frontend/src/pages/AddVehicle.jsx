@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApp } from '../context/AppContext'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const STATUS_OPTIONS = ['Received', 'Diagnosis', 'Repairing', 'Quality Check', 'Completed']
 
 export default function AddVehicle() {
@@ -40,7 +42,7 @@ export default function AddVehicle() {
         throw new Error('Please log in again.')
       }
 
-      const response = await fetch('http://localhost:5000/api/vehicles', {
+      const response = await fetch(`${API_URL}/api/vehicles`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -13,7 +13,7 @@ const DEFAULT_SIDEBAR_WIDTH = 227
 const MIN_SIDEBAR_WIDTH = 150
 const MAX_SIDEBAR_WIDTH = 480
 
-const API_URL = 'http://localhost:5000/api'
+const API_URL = `${import.meta.env.VITE_API_URL}/api`
 
 export default function Board() {
   const { vehicleId } = useParams()

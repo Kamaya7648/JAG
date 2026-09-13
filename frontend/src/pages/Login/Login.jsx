@@ -5,6 +5,8 @@ import garageLogo from '../../assets/icons/garage-logo.svg';
 import './Login.css';
 import { useApp } from '../../context/AppContext';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const EyeIcon = ({ open }) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
     {open ? (
@@ -78,7 +80,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

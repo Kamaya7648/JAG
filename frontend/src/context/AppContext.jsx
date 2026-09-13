@@ -2,6 +2,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AppContext = createContext();
+const API_URL = import.meta.env.VITE_API_URL;
+
 const DEFAULT_SETTINGS = {
   garageName: "AutoCare Garage",
   address: "123, Main Road, Colombo, Sri Lanka",
@@ -63,7 +65,7 @@ export function AppProvider({ children }) {
       return;
     }
 
-    fetch("http://localhost:5000/api/settings", {
+    fetch(`${API_URL}/api/settings`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -92,7 +94,7 @@ export function AppProvider({ children }) {
 
     if (!token) return;
 
-    fetch("http://localhost:5000/api/settings", {
+    fetch(`${API_URL}/api/settings`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -4,6 +4,8 @@ import ColumnFilter from '../components/ColumnFilter.jsx'
 import { STATUS_STYLES } from '../data.js'
 import { useApp } from '../context/AppContext.jsx'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const COLUMNS = [
   { key: 'id', label: 'Vehicle ID' },
   { key: 'model', label: 'Vehicle Model' },
@@ -38,7 +40,7 @@ export default function Dashboard() {
         setLoading(true)
         setError('')
 
-        const response = await fetch('http://localhost:5000/api/vehicles', {
+        const response = await fetch(`${API_URL}/api/vehicles`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

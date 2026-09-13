@@ -18,6 +18,8 @@ import {
 import regbg from '../../assets/images/regbg.jpg';
 import './Register.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const DEPARTMENTS = [
   'General Services',
   'Body & Paint',
@@ -267,7 +269,7 @@ const Register = () => {
 
     try {
       const response = await fetch(
-        'http://localhost:5000/api/auth/register',
+        `${API_URL}/api/auth/register`,
         {
           method: 'POST',
           headers: {

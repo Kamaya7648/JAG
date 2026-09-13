@@ -28,6 +28,8 @@ import {
 } from "lucide-react";
 import { useApp } from "../context/AppContext.jsx";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 /* ---------------- helpers ---------------- */
 
 const STATUS_CONFIG = {
@@ -173,7 +175,7 @@ export default function ReportGeneration() {
       return;
     }
 
-    fetch("http://localhost:5000/api/vehicles", {
+    fetch(`${API_URL}/api/vehicles`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

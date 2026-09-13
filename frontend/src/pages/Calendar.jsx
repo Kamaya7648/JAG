@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight, X, Plus, Trash2 } from "lucide-react";
 import { STATUS_STYLES } from "../data.js";
 import { useApp } from "../context/AppContext";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const WEEK_LETTERS = ["S", "M", "T", "W", "T", "F", "S"];
 const DAY_SHORT = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const MONTH_NAMES = [
@@ -99,11 +101,11 @@ export default function Calendar() {
   const [viewingEvent, setViewingEvent] = useState(null);
 
   useEffect(() => {
-  if (!token) {
-    return;
-  }
+    if (!token) {
+      return;
+    }
 
-    fetch("http://localhost:5000/api/events", {
+    fetch(`${API_URL}/api/events`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -239,7 +241,7 @@ export default function Calendar() {
   ) => {
     if (!token || !text || text.trim() === "") return;
 
-    fetch("http://localhost:5000/api/events", {
+    fetch(`${API_URL}/api/events`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -309,7 +311,7 @@ export default function Calendar() {
     if (!token) return;
 
     fetch(
-      `http://localhost:5000/api/events/${id}`,
+      `${API_URL}/api/events/${id}`,
       {
         method: "DELETE",
         headers: {
