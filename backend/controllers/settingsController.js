@@ -1,4 +1,4 @@
-const Settings = require('../../database/models/Settings');
+const Settings = require('../database/models/Settings');
 
 const DEFAULT_SETTINGS = {
   garageName: "AutoCare Garage",

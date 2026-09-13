@@ -1,5 +1,5 @@
-const Task = require("../../database/models/Task");
-const Vehicle = require("../../database/models/Vehicle");
+const Task = require("../database/models/Task");
+const Vehicle = require("../database/models/Vehicle");
 
 async function getTasksByVehicle(req, res) {
   try {
